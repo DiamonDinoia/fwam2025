@@ -131,14 +131,14 @@ public:
         // simd width since it is architecture/compile flags dependent
         constexpr std::int64_t simd_width = batch::size;
 
-        const auto trunc_n = N & (-simd_width); // round down to multiple of simd_width
+        const auto n_simd = N & (-simd_width); // round down to multiple of simd_width
 
         const batch bpt(pt);
         batch bnum(0);
         batch bden(0);
 
         std::size_t i = 0;
-        for (; i < trunc_n; i += simd_width) {
+        for (; i < n_simd; i += simd_width) {
             const auto bx = batch::load_unaligned(x.data() + i);
             const auto bw = batch::load_unaligned(w.data() + i);
             const auto bf = batch::load_unaligned(fvals.data() + i);
